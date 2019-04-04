@@ -1,0 +1,19 @@
+.tabber-wrap {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100vw;
+}
+
+.tabber-wrap ul li {
+    float: left;
+    text-align: center;
+    background: red;
+    line-height: 40px;
+    color: #fff;
+}
+
+.tabber-wrap ul .active {
+    color: red;
+    background: #fff;
+}
