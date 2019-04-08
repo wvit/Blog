@@ -1,5 +1,6 @@
-import React from 'react';
-import '../../assets/css/public/Tabber.css'
+import React, { BrowserRouter, Switch, Route, NavLink } from 'react';
+import homeRoute from '../../router/home';
+import '../../assets/css/public/Tabber.css';
 
 class Tabber extends React.Component {
   constructor(props) {
@@ -7,40 +8,49 @@ class Tabber extends React.Component {
     this.state = {
       //tabber配置
       tabberConfig: [
-        { name: '首页' },
-        { name: '发现' },
-        { name: '我的' }
+        { name: '首页', route: '/index' },
+        { name: '发现', route: '/find' },
+        { name: '我的', route: '/my' }
       ],
-      activeIndex: 0,//当前选中
     }
   }
   render() {
     return (
-      <div className="tabber-wrap">
-        <ul className="clearfix">
-          {
-            this.state.tabberConfig.map((item, index) => {
-              return <li
+      <BrowserRouter>
+        <Switch>
+          {homeRoute.map((item, index) => {
+            return (
+              <Route
                 key={index}
-                className={[index === this.state.activeIndex ? 'active' : '']}
-                onClick={this.tabberChange.bind(this, index)}
-                style={{
-                  width: `${100 / this.state.tabberConfig.length}%`
-                }}
-              >
-                {item.name}
-              </li>
-            })
-          }
-        </ul>
-      </div>
+                path={item.path}
+                exact={item.exact}
+                component={item.component}
+              />
+            )
+          })}
+        </Switch>
+        <div className="tabber-wrap">
+          <ul className="clearfix">
+            {
+              this.state.tabberConfig.map((item, index) => {
+                return <li
+                  key={index}
+                  style={{
+                    width: `${100 / this.state.tabberConfig.length}%`
+                  }}
+                >
+                  <NavLink
+                    activeClassName='active'
+                    to={item.route}>
+                    {item.name}
+                  </NavLink>
+                </li>
+              })
+            }
+          </ul>
+        </div>
+      </BrowserRouter>
     )
-  }
-  //点击切换tabber
-  tabberChange(activeIndex) {
-    this.setState({
-      activeIndex
-    })
   }
 }
 
