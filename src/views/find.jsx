@@ -1,5 +1,5 @@
 import React from 'react'
-import HeadTitle from '../components/public/HeadTitle'
+import HeadTitle from '../components/public/HeadTitle.jsx'
 
 class Find extends React.Component {
     render() {

@@ -1,8 +1,6 @@
 import React from 'react';
-import { BrowserRouter, Switch, Route, NavLink, Redirect } from 'react-router-dom';
-import Index from '../../views/index'
-import Find from '../../views/find'
-import My from '../../views/my'
+import { BrowserRouter, NavLink } from 'react-router-dom';
+import TabberRouter from '../../router/TabberTouter.jsx'
 import '../../assets/css/public/Tabber.css';
 
 class Tabber extends React.Component {
@@ -20,14 +18,7 @@ class Tabber extends React.Component {
   render() {
     return (
       <BrowserRouter>
-        <Switch>
-          <Route exact path="/" render={() =>
-            <Redirect to='/index'></Redirect>}>
-          </Route>
-          <Route path='/index' component={Index} />
-          <Route path='/find' component={Find} />
-          <Route path='/my' component={My} />
-        </Switch>
+        <TabberRouter />
         <div className="tabber-wrap">
           <ul className="clearfix">
             {
