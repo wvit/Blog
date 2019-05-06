@@ -17,7 +17,7 @@ class Tabber extends React.Component {
   }
   render() {
     return (
-      <BrowserRouter>
+      <BrowserRouter >
         <TabberRouter />
         <div className="tabber-wrap">
           <ul className="clearfix">

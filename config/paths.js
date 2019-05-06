@@ -53,14 +53,14 @@ const moduleFileExtensions = [
 ];
 
 // Resolve file paths in the same order as webpack
-const resolveModule = (resolveFn, filePath, jsx = false) => {
+const resolveModule = (resolveFn, filePath) => {
   const extension = moduleFileExtensions.find(extension =>
     fs.existsSync(resolveFn(`${filePath}.${extension}`))
   );
   if (extension) {
     return resolveFn(`${filePath}.${extension}`);
   }
-  return resolveFn(`${filePath}.${jsx?'jsx':'js'}`);
+  return resolveFn(`${filePath}.js}`);
 };
 
 // config after eject: we're in ./config/
@@ -70,7 +70,7 @@ module.exports = {
   appBuild: resolveApp('build'),
   appPublic: resolveApp('public'),
   appHtml: resolveApp('public/index.html'),
-  appIndexJs: resolveModule(resolveApp, 'src/index', true),
+  appIndexJs: resolveModule(resolveApp, 'src/index'),
   appPackageJson: resolveApp('package.json'),
   appSrc: resolveApp('src'),
   appTsConfig: resolveApp('tsconfig.json'),
