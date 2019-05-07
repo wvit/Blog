@@ -1,0 +1,25 @@
+.user-list {
+    padding: 0 10px;
+}
+
+.user-list>li {
+    margin-top: 10px;
+}
+
+.user-list>li::before {
+    float: left;
+
+}
+
+.user-list>li>span {
+    margin: 0 10px;
+    float: left;
+}
+
+.user-list>li>div {
+    float: left;
+}
+
+.ColorPicker {
+    display: inline-block;
+}

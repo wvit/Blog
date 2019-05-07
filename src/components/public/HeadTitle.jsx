@@ -1,6 +1,6 @@
 import React from 'react';
 import { createBrowserHistory } from 'history'
-import '../../assets/css/public/HeadTitle.css'
+import '../../assets/css/public/headTitle.css'
 
 class HeadTitle extends React.Component {
   render() {

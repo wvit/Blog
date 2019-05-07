@@ -1,5 +1,5 @@
 import React from 'react'
-import HeadTitle from '../components/public/HeadTitle.jsx'
+import HeadTitle from '../components/public/headTitle'
 
 class Index extends React.Component {
     render() {

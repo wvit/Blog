@@ -1,8 +1,8 @@
 import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
-import Index from '../views/index.jsx'
-import Find from '../views/find.jsx'
-import My from '../views/my.jsx'
+import Index from '../views/index'
+import Find from '../views/find'
+import User from '../views/user'
 
 function TabberTouter() {
     return (
@@ -12,7 +12,7 @@ function TabberTouter() {
             </Route>
             <Route path='/index' component={Index} />
             <Route path='/find' component={Find} />
-            <Route path='/my' component={My} />
+            <Route path='/User' component={User} />
         </Switch>
     )
 }
