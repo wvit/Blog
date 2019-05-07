@@ -3,7 +3,7 @@ import HeadTitle from '../components/public/headTitle'
 import { SketchPicker, AlphaPicker, BlockPicker, ChromePicker, CirclePicker, GithubPicker, HuePicker } from 'react-color'
 
 class Find extends React.Component {
-    render() {
+    render () {
         return (
             <div>
                 <HeadTitle titleName="发现" />

@@ -18,7 +18,6 @@ class User extends React.Component {
                         </div>
                     </li>
                 </ul>
-
             </div >
         )
     }
