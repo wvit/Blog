@@ -2,7 +2,7 @@ import React from 'react'
 import Tabber from '../components/public/tabber'
 
 class Home extends React.Component {
-    render() {
+    render () {
         const tabberConfig = [
             { name: '首页', route: '/index' },
             { name: '发现', route: '/find' },
