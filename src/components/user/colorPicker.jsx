@@ -37,6 +37,9 @@ class ColorPicker extends React.Component {
       this.setState({ showOnOff: false })
     })
   }
+  componentWillUnmount () {
+    this.setState = () => { };
+  }
   //颜色选择器的显示与隐藏
   showHideColorPicker (ev) {
     ev.nativeEvent.stopImmediatePropagation()
