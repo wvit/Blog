@@ -1,19 +1,23 @@
 import React from 'react'
-import Tabber from '../components/public/tabber'
+import Index from '../views/index'
+import Find from '../views/find'
+import User from '../views/user'
+import { Tabber } from 'moha-ui'
 
 class Home extends React.Component {
-    render () {
-        const tabberConfig = [
-            { name: '首页', route: '/index' },
-            { name: '发现', route: '/find' },
-            { name: '我的', route: '/user' }
-        ]
-        return (
-            <div>
-                <Tabber tabberConfig={tabberConfig} />
-            </div>
-        )
-    }
+  render() {
+    //tabber配置
+    const tabberConfig = [
+      { name: '首页', path: '/index', component: Index },
+      { name: '发现', path: '/find', component: Find },
+      { name: '我的', path: '/user', component: User }
+    ]
+    return (
+      <div>
+        <Tabber tabberConfig={tabberConfig} />
+      </div>
+    )
+  }
 }
 
 export default Home
