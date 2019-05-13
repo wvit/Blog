@@ -6,7 +6,7 @@ import User from '../views/user'
 import { Tabber } from 'moha-ui'
 
 class Home extends React.Component {
-  render () {
+  render() {
     //tabber配置
     const tabberConfig = [
       { name: '首页', path: '/index', component: Index },
