@@ -4,8 +4,15 @@ import Learn from '../views/learn'
 import Find from '../views/find'
 import User from '../views/user'
 import { Tabber } from 'moha-ui'
+import util from '../assets/js/utils'
 
 class Home extends React.Component {
+  constructor(props) {
+    super(props);
+    let mainColor = util.localStore.get('mainColor');
+    if (!mainColor) util.localStore.set('mainColor', 'red');
+    util.setMainColor(mainColor ? mainColor : 'red');
+  }
   render() {
     //tabber配置
     const tabberConfig = [
@@ -16,7 +23,7 @@ class Home extends React.Component {
     ]
     return (
       <div>
-        <Tabber tabberConfig={tabberConfig} />
+        <Tabber tabberConfig={tabberConfig} activeClassName="mainStyleOn" className="mainStyleOff" />
       </div>
     )
   }

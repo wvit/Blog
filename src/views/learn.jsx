@@ -5,7 +5,7 @@ class Learn extends React.Component {
   render() {
     return (
       <div>
-        <Title titleName='学习记录' />
+        <Title titleName='学习记录' className="mainBgColor" />
         <ul className="body">
           <li>
             <div className="item-head">

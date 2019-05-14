@@ -6,7 +6,7 @@ class Find extends React.Component {
   render() {
     return (
       <div>
-        <Title titleName="发现" />
+        <Title titleName="发现" className="mainBgColor" F />
         <div>
           <SketchPicker />
           <div style={{ border: '2px solid red', margin: '30px auto' }}></div>

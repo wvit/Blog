@@ -11,7 +11,7 @@ class Index extends React.Component {
   render() {
     return (
       <div>
-        <Title titleName="首页" />
+        <Title titleName="首页" className="mainBgColor" />
         <button onClick={this.changeShow.bind(this)}>按钮</button>
         <Dialog
           visible={this.state.DialogOnOff}

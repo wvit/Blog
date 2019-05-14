@@ -1,4 +1,4 @@
-const utils = {
+export default {
   //判断字符串为空
   judgeNull(string) {
     for (let item of string.split('')) {
@@ -185,6 +185,34 @@ const utils = {
       }
     }, speed);
   },
+  //设置背景主题
+  setMainColor(color) {
+    const style = document.createElement('style');
+    style.innerHTML = `
+        .mainStyleOff{
+            background:${color} !important;
+            color:#fff !important;
+        }
+        .mainStyleOn{
+            background:#fff !important;
+            color:${color} !important;
+        }
+        .mainBgColor{
+            background:${color} !important;
+        }
+   `
+    this.query('head')[0].appendChild(style);
+  },
+  //设置字体颜色
+  setFontColor(color) {
+    const style = document.createElement('style');
+    style.innerHTML = `
+        .mainFontColor{
+            color:${color};
+        }
+   `
+    this.query('head')[0].appendChild(style);
+  },
   //全局map对象
   map: new Map(),
   //设置session缓存
@@ -203,7 +231,21 @@ const utils = {
     remove(key) {
       sessionStorage.removeItem(key);
     }
+  },
+  localStore: {
+    set(key, value) {
+      localStorage.setItem(key, JSON.stringify(value));
+    },
+    get(key) {
+      try {
+        return JSON.parse(localStorage.getItem(key));
+      } catch (err) {}
+    },
+    clear() {
+      localStorage.clear();
+    },
+    remove(key) {
+      localStorage.removeItem(key);
+    }
   }
 }
-
-export default utils;

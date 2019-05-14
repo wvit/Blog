@@ -1,18 +1,19 @@
 import React from 'react'
 import { ColorPicker, Title } from 'moha-ui'
 import '../assets/css/user/user.css'
+import util from '../assets/js/utils';
 
 class User extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      colorValue: 'blue'  //颜色值
+      colorValue: util.localStore.get('mainColor')  //颜色值
     }
   }
   render() {
     return (
       <div className="user-wrap">
-        <Title titleName="我的" />
+        <Title titleName="我的" className="mainBgColor" />
         <ul className="user-list">
           <li className="clearfix icon icon-colorPicker">
             <span >选择主题：</span>
@@ -30,10 +31,12 @@ class User extends React.Component {
     )
   }
   //颜色值变化
-  colorChange(ev) {
+  colorChange({ hex }) {
     this.setState({
-      colorValue: ev.hex
-    })
+      colorValue: hex
+    });
+    util.setMainColor(hex);
+    util.localStore.set('mainColor', hex)
   }
 }
 
