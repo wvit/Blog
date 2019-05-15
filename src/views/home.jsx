@@ -10,21 +10,26 @@ class Home extends React.Component {
   constructor(props) {
     super(props);
     let mainColor = util.localStore.get('mainColor');
-    if (!mainColor) util.localStore.set('mainColor', 'red');
-    util.setMainColor(mainColor ? mainColor : 'red');
+    mainColor = mainColor ? mainColor : 'red';
+    util.setMainColor(mainColor);
+    this.state = {
+      mainColor //主题颜色
+    }
   }
   render() {
     //tabber配置
-    const tabberConfig = [
-      { name: '首页', path: '/index', component: Index },
-      { name: '学习', path: '/learn', component: Learn },
-      { name: '发现', path: '/find', component: Find },
-      { name: '我的', path: '/user', component: User }
-    ]
+    const tabberConfig = {
+      iconType: 'iconfont',
+      selectedColor: this.state.mainColor,
+      list: [
+        { name: '首页', path: '/index', component: Index, className: "icon icon-shouye" },
+        { name: '学习', path: '/learn', component: Learn, className: "icon icon-xuexi" },
+        { name: '生活', path: '/find', component: Find, className: "icon icon-shenghuo" },
+        { name: '我的', path: '/user', component: User, className: "icon icon-shezhi" }
+      ]
+    }
     return (
-      <div>
-        <Tabber tabberConfig={tabberConfig} activeClassName="mainStyleOn" className="mainStyleOff" />
-      </div>
+      <Tabber tabberConfig={tabberConfig} activeClassName="mainStyleOn" className="mainStyleOff" />
     )
   }
 }

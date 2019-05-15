@@ -189,14 +189,6 @@ export default {
   setMainColor(color) {
     const style = document.createElement('style');
     style.innerHTML = `
-        .mainStyleOff{
-            background:${color} !important;
-            color:#fff !important;
-        }
-        .mainStyleOn{
-            background:#fff !important;
-            color:${color} !important;
-        }
         .mainBgColor{
             background:${color} !important;
         }
