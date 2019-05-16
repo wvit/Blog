@@ -4,16 +4,18 @@ import Learn from '../views/learn'
 import Find from '../views/find'
 import User from '../views/user'
 import { Tabber } from 'moha-ui'
-import util from '../assets/js/utils'
+import { mainColorStore } from '../store'
 
 class Home extends React.Component {
   constructor(props) {
     super(props);
-    let mainColor = util.localStore.get('mainColor');
-    mainColor = mainColor ? mainColor : 'red';
-    util.setMainColor(mainColor);
+    mainColorStore.subscribe(() => {
+      this.setState({
+        mainColor: mainColorStore.getState()
+      })
+    })
     this.state = {
-      mainColor //主题颜色
+      mainColor: mainColorStore.getState()//主题颜色
     }
   }
   render() {

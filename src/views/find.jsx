@@ -1,6 +1,6 @@
 import React from 'react'
 import { Title } from 'moha-ui'
-import { SketchPicker, AlphaPicker, BlockPicker, ChromePicker, CirclePicker, GithubPicker, HuePicker } from 'react-color'
+import { SketchPicker, AlphaPicker, BlockPicker, ChromePicker, CirclePicker, GithubPicker, HuePicker } from 'react-color-moha'
 
 class Find extends React.Component {
   render() {

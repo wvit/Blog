@@ -1,13 +1,13 @@
 import React from 'react'
 import { ColorPicker, Title } from 'moha-ui'
+import { mainColorStore } from '../store'
 import '../assets/css/user/user.css'
-import util from '../assets/js/utils';
 
 class User extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      colorValue: util.localStore.get('mainColor')  //颜色值
+      colorValue: mainColorStore.getState() //颜色值
     }
   }
   render() {
@@ -35,8 +35,7 @@ class User extends React.Component {
     this.setState({
       colorValue: hex
     });
-    util.setMainColor(hex);
-    util.localStore.set('mainColor', hex)
+    mainColorStore.dispatch({ type: 'change', color: hex });
   }
 }
 
