@@ -1,7 +1,7 @@
 import React from 'react'
 import Index from '../views/index'
 import Learn from '../views/learn'
-import Find from '../views/find'
+import Life from './life'
 import User from '../views/user'
 import { Tabber } from 'moha-ui'
 import { mainColorStore } from '../store'
@@ -26,7 +26,7 @@ class Home extends React.Component {
       list: [
         { name: '首页', path: '/index', component: Index, className: "icon icon-shouye" },
         { name: '学习', path: '/learn', component: Learn, className: "icon icon-xuexi" },
-        { name: '生活', path: '/find', component: Find, className: "icon icon-shenghuo" },
+        { name: '生活', path: '/Life', component: Life, className: "icon icon-shenghuo" },
         { name: '我的', path: '/user', component: User, className: "icon icon-shezhi" }
       ]
     }

@@ -12,14 +12,16 @@ class Index extends React.Component {
     return (
       <div>
         <Title titleName="首页" className="mainBgColor" />
-        <button onClick={this.changeShow.bind(this)}>按钮</button>
-        <Dialog
-          visible={this.state.DialogOnOff}
-          onClose={this.close.bind(this)}
-          onAffirm={this.affirm.bind(this)}
-        >
-          <p>欢迎来到wv的blog</p>
-        </Dialog>
+        <div className="body">
+          <button onClick={this.changeShow.bind(this)}>按钮</button>
+          <Dialog
+            visible={this.state.DialogOnOff}
+            onClose={this.close.bind(this)}
+            onAffirm={this.affirm.bind(this)}
+          >
+            <p>欢迎来到wv的blog，应用正在开发</p>
+          </Dialog>
+        </div>
       </div>
     )
   }

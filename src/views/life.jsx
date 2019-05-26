@@ -6,9 +6,9 @@ class Find extends React.Component {
   render () {
     return (
       <div>
-        <Title titleName="发现" className="mainBgColor" />
-        <div>
-
+        <Title titleName="生活记录" className="mainBgColor" />
+        <div className="body">
+          <p>暂无内容</p>
           {/* <SketchPicker />
           <div style={{ border: '2px solid red', margin: '30px auto' }}></div>
           <AlphaPicker color='red' />

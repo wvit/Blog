@@ -4,10 +4,10 @@ import a from '../assets/img/a.png'
 import '../assets/css/learn/learn.css'
 
 class Learn extends React.Component {
-  render() {
+  render () {
     return (
       <div>
-        <Title titleName='学习记录' className="mainBgColor" />
+        <Title titleName='学习日志' className="mainBgColor" />
         <ul className="blog-list">
           {
             [1, 2, 3].map((item, index) => {
