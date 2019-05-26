@@ -1,14 +1,15 @@
 import React from 'react'
 import { Title } from 'moha-ui'
-import { SketchPicker, AlphaPicker, BlockPicker, ChromePicker, CirclePicker, GithubPicker, HuePicker } from 'react-color-moha'
+// import { SketchPicker, AlphaPicker, BlockPicker, ChromePicker, CirclePicker, GithubPicker, HuePicker } from 'react-color-moha'
 
 class Find extends React.Component {
-  render() {
+  render () {
     return (
       <div>
-        <Title titleName="发现" className="mainBgColor" F />
+        <Title titleName="发现" className="mainBgColor" />
         <div>
-          <SketchPicker />
+
+          {/* <SketchPicker />
           <div style={{ border: '2px solid red', margin: '30px auto' }}></div>
           <AlphaPicker color='red' />
           <div style={{ border: '2px solid red', margin: '30px auto' }}></div>
@@ -22,7 +23,7 @@ class Find extends React.Component {
           <div style={{ border: '2px solid red', margin: '30px auto' }}></div>
           <HuePicker />
           <div style={{ border: '2px solid red', margin: '30px auto' }}></div>
-          <div style={{ border: '2px solid red', margin: '30px auto' }}></div>
+          <div style={{ border: '2px solid red', margin: '30px auto' }}></div> */}
         </div>
       </div>
     )

@@ -18,7 +18,7 @@ class Home extends React.Component {
       mainColor: mainColorStore.getState()//主题颜色
     }
   }
-  render() {
+  render () {
     //tabber配置
     const tabberConfig = {
       iconType: 'iconfont',
@@ -31,7 +31,7 @@ class Home extends React.Component {
       ]
     }
     return (
-      <Tabber tabberConfig={tabberConfig} activeClassName="mainStyleOn" className="mainStyleOff" />
+      <Tabber tabberConfig={tabberConfig} />
     )
   }
 }
