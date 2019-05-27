@@ -10,6 +10,12 @@
   margin-bottom: 10px;
 }
 
+.item-head h4 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .item-head p {
   line-height: 14px;
   color: #999;
@@ -22,19 +28,27 @@
 
 .item-content {
   margin-top: 10px;
+  display: flex;
 }
 
 .item-content .text {
-  float: left;
-  width: 80%;
   box-sizing: border-box;
   padding-right: 10px;
   font-size: 14px;
   line-height: 24px;
   word-break: break-all;
+  display: -webkit-box;
+  /*! autoprefixer: ignore next */
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+.item-content .text img {
+  display: none;
 }
 
 .item-content .img {
-  float: right;
-  width: 20%;
+  height: 48px;
 }
