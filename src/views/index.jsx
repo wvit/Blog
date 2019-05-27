@@ -8,33 +8,37 @@ class Index extends React.Component {
       DialogOnOff: false//弹窗开关
     }
   }
-  render() {
+  render () {
     return (
       <div>
         <Title titleName="首页" className="mainBgColor" />
-        <button onClick={this.changeShow.bind(this)}>按钮</button>
-        <Dialog
-          visible={this.state.DialogOnOff}
-          onClose={this.close.bind(this)}
-          onAffirm={this.affirm.bind(this)}
-        />
+        <div className="body">
+          <button onClick={this.changeShow.bind(this)}>按钮</button>
+          <Dialog
+            visible={this.state.DialogOnOff}
+            onClose={this.close.bind(this)}
+            onAffirm={this.affirm.bind(this)}
+          >
+            <p>欢迎来到wv的blog，应用正在开发</p>
+          </Dialog>
+        </div>
       </div>
     )
   }
   //控制显示
-  changeShow() {
+  changeShow () {
     this.setState({
       DialogOnOff: true
     })
   }
   //隐藏
-  close() {
+  close () {
     this.setState({
       DialogOnOff: false
     })
   }
   //确认对话
-  affirm() {
+  affirm () {
     this.setState({
       DialogOnOff: false
     })
