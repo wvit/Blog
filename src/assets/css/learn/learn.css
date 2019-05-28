@@ -32,12 +32,14 @@
 }
 
 .item-content .text {
+  width: 100%;
   box-sizing: border-box;
   padding-right: 10px;
   font-size: 14px;
   line-height: 24px;
   word-break: break-all;
   display: -webkit-box;
+  height: 48px;
   /*! autoprefixer: ignore next */
   -webkit-box-orient: vertical;
   text-overflow: ellipsis;
@@ -51,4 +53,12 @@
 
 .item-content .img {
   height: 48px;
+}
+
+.blog-item-wrap {
+  display: block;
+}
+
+a {
+  color: #333;
 }

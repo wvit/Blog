@@ -1,5 +1,5 @@
 import React from 'react'
-import Index from '../views/index'
+// import Index from '../views/index'
 import Learn from '../views/learn'
 import Life from './life'
 import User from '../views/user'
@@ -18,16 +18,16 @@ class Home extends React.Component {
       mainColor: mainColorStore.getState()//主题颜色
     }
   }
-  render () {
+  render() {
     //tabber配置
     const tabberConfig = {
       iconType: 'iconfont',
       selectedColor: this.state.mainColor,
       list: [
-        { name: '首页', path: '/index', component: Index, className: "icon icon-shouye" },
-        { name: '学习', path: '/learn', component: Learn, className: "icon icon-xuexi" },
-        { name: '生活', path: '/Life', component: Life, className: "icon icon-shenghuo" },
-        { name: '我的', path: '/user', component: User, className: "icon icon-shezhi" }
+        // { name: '首页', path: '/home/index', component: Index, className: "icon icon-shouye" },
+        { name: '学习', path: '/home/learn', component: Learn, className: "icon icon-xuexi" },
+        { name: '生活', path: '/home/life', component: Life, className: "icon icon-shenghuo" },
+        { name: '我的', path: '/home/user', component: User, className: "icon icon-shezhi" }
       ]
     }
     return (

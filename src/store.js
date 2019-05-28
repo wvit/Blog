@@ -1,7 +1,7 @@
 import {
   createStore
 } from 'redux';
-import util from './assets/js/utils';
+import util from './utils';
 
 function mainColor(mainColor, {
   color
