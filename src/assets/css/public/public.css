@@ -9,3 +9,7 @@ body {
 .link {
   display: block;
 }
+
+.mt10 {
+  margin-top: 10px;
+}
