@@ -1,7 +1,7 @@
 import axios from 'axios'
-const production = true;
-const url = production ? '132.232.114.236' : '10.100.115.106'
+const production = false;
+const baseURL = production ? 'https://1wei.cc:1999' : 'http://10.100.115.108:1999'
 
 export default axios.create({
-  baseURL: `http://${url}:1999`
+  baseURL
 });

@@ -65,7 +65,7 @@ class Skill extends React.Component {
           data: [data],
           top: '0%',
           bottom: '0%',
-          left: '10%',
+          left: '12%',
           right: '30%',
           symbolSize: 12,
           label: {

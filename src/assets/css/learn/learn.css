@@ -1,13 +1,17 @@
-.blog-list {
+.wrap {
   background: #f6f6f6;
-  min-height: calc(100vh - 80px);
+}
+
+.blog-list {
+
+  min-height: calc(100vh - 89px);
   overflow: hidden;
 }
 
 .blog-list li {
   padding: 0 10px 10px;
   background: #fff;
-  margin-bottom: 10px;
+  margin-top: 10px;
 }
 
 .item-head h4 {
@@ -61,4 +65,11 @@
 
 a {
   color: #333;
+}
+
+.loading {
+  font-size: 12px;
+  color: #999;
+  text-align: center;
+  letter-spacing: 1px;
 }

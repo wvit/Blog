@@ -2,19 +2,21 @@ import React from 'react'
 import { Title } from 'moha-ui'
 import axios from '../axios'
 import { NavLink } from 'react-router-dom'
+import utils from '../utils'
 import '../assets/css/learn/learn.css'
 
 class Learn extends React.Component {
   constructor(props) {
     super(props)
-    this.getBlogList();
     this.state = {
-      blogList: []//博客列表
+      blogList: [],//博客列表
+      page: 1,//页码
+      blogListHeight: 0,//博客容器的高
     }
   }
   render() {
     return (
-      <div>
+      <div className="wrap">
         <Title titleName='学习日志' className="mainBgColor" />
         <ul className="blog-list">
           {
@@ -36,13 +38,32 @@ class Learn extends React.Component {
             })
           }
         </ul>
+        <p className="loading">正在加载下一页...</p>
       </div>
     )
   }
+  //组件初始化完成
+  componentDidMount() {
+    const titleHeight = utils.query('.head-wrap')[0].offsetHeight;
+    const tabberHeight = utils.query('.tabber-wrap ul')[0].offsetHeight;
+    const clientHeight = window.screen.height - titleHeight - tabberHeight;
+    this.getBlogList();
+    window.addEventListener('scroll', () => {
+      const scrollTop = clientHeight + document.documentElement.scrollTop;
+      if (scrollTop > this.state.blogListHeight) {
+        const page = this.state.page + 1;
+        this.setState({
+          page
+        });
+        this.getBlogList();
+      }
+    })
+  }
   //获取blog列表
   getBlogList() {
-    const blogList = [];
-    axios.get(`/app/getBlogs?key=&page=1&pageSize=10`).then(res => {
+    const blogList = this.state.blogList;
+    const blogListLength = blogList.length
+    axios.get(`/app/getBlogs?key=&page=${this.state.page}&pageSize=10`).then(res => {
       if (res.data.code !== 0) return;
       res.data.data.list.forEach(item => {
         const content = new DOMParser().parseFromString(item.content, 'text/html');
@@ -52,6 +73,12 @@ class Learn extends React.Component {
       });
       this.setState({
         blogList
+      });
+      if (blogListLength === this.state.blogList.length) {
+        utils.query('.loading')[0].style.display = 'none';
+      }
+      this.setState({
+        blogListHeight: utils.query('.blog-list')[0].offsetHeight
       });
     });
   }
