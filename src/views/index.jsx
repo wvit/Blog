@@ -8,7 +8,7 @@ class Index extends React.Component {
       DialogOnOff: false//弹窗开关
     }
   }
-  render () {
+  render() {
     return (
       <div>
         <Title titleName="首页" className="mainBgColor" />
@@ -26,19 +26,19 @@ class Index extends React.Component {
     )
   }
   //控制显示
-  changeShow () {
+  changeShow() {
     this.setState({
       DialogOnOff: true
     })
   }
   //隐藏
-  close () {
+  close() {
     this.setState({
       DialogOnOff: false
     })
   }
   //确认对话
-  affirm () {
+  affirm() {
     this.setState({
       DialogOnOff: false
     })
