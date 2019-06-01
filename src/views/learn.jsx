@@ -1,27 +1,66 @@
 import React from 'react'
-import { Title } from 'moha-ui'
-import axios from '../axios'
+import { Title, Sidebar } from 'moha-ui'
 import { NavLink } from 'react-router-dom'
-import utils from '../utils'
+import { tagStore, mainColorStore } from '../store'
+import { sessionStore, query, axios } from '../utils'
 import '../assets/css/learn/learn.css'
 
 class Learn extends React.Component {
   constructor(props) {
     super(props)
-    this.reqOnOff = true;
+    this.reqTimer = null;//请求间隔定时器
+    this.queryTags = [];//查询关键字
+    this.reqOnOff = true;//是否允许请求
+    this.blogListHeight = 0;//博客容器的高
+    this.page = 1;//页码
+    //监听标签容器变化
+    tagStore.subscribe(() => {
+      this.setState({
+        tags: tagStore.getState().tag
+      })
+    })
     this.state = {
+      tags: tagStore.getState().tag,//博客标签
       blogList: [],//博客列表
-      page: 1,//页码
-      blogListHeight: 0,//博客容器的高
+      sidebarOnOff: false,//菜单栏显示开关
     }
   }
+  //渲染
   render() {
+    const style = { overflow: "hidden", height: 'calc(100vh - 89px)' };
+    const mainColor = mainColorStore.getState();
+    const { sidebarOnOff, blogList, tags } = this.state;
     return (
-      <div className="wrap">
-        <Title titleName='学习日志' className="mainBgColor" />
+      <div className="wrap" style={sidebarOnOff ? style : {}}>
+        <Title titleName='学习日志' className="mainBgColor">
+          <span className="title-btn icon icon-40" onClick={this.showHideMenuBar.bind(this, true)}></span>
+        </Title>
+        <Sidebar visible={sidebarOnOff} onClose={this.showHideMenuBar.bind(this, false)}>
+          <h3 className="tag-title icon icon-tag">请选择博客标签</h3>
+          <ul className="tag-list">
+            {
+              tags.map((item, index) => {
+                const checked = item.checked;
+                return (
+                  <li
+                    style={{
+                      border: `1px solid ${checked ? mainColor : '#999'}`,
+                      background: checked ? mainColor : '',
+                      color: checked ? '#fff' : ''
+                    }}
+                    key={index}
+                    onClick={this.checkTag.bind(this, index)}
+                  >
+                    {item.tag}
+                  </li>
+                )
+              })
+            }
+          </ul>
+        </Sidebar>
         <ul className="blog-list">
           {
-            this.state.blogList.map((item, index) => {
+            blogList.map((item, index) => {
               return <li key={index} >
                 <NavLink to={`/interior/blogDetail/${item._id}`} className="link" onClick={this.saveData.bind(this)}>
                   <div className="item-head">
@@ -45,30 +84,54 @@ class Learn extends React.Component {
   }
   //组件初始化完成
   componentDidMount() {
-    const titleHeight = utils.query('.head-wrap')[0].offsetHeight;
-    const tabberHeight = utils.query('.tabber-wrap ul')[0].offsetHeight;
+    const titleHeight = query('.head-wrap')[0].offsetHeight;
+    const tabberHeight = query('.tabber-wrap ul')[0].offsetHeight;
     const clientHeight = window.screen.height - titleHeight - tabberHeight;
     this.getBlogList();
     window.onscroll = () => {
       const scrollTop = clientHeight + document.documentElement.scrollTop;
-      if (scrollTop > this.state.blogListHeight) {
-        const page = this.state.page + 1;
-        this.setState({
-          page
-        });
+      if (scrollTop > this.blogListHeight) {
+        this.page = this.page + 1
         this.getBlogList();
       }
     }
+  }
+  //选择标签
+  checkTag(index) {
+    const tags = this.state.tags;
+    tags[index].checked = !tags[index].checked;
+    tagStore.dispatch({
+      type: 'tag',
+      data: tags
+    });
+    clearTimeout(this.reqTimer)
+    this.reqTimer = setTimeout(() => {
+      // this.setState({
+      //   blogList: []
+      // })
+      // if (tagStore.getState().tag) {
+      //   tagStore.getState().tag.forEach(item => {
+      //     if (item.checked) queryTag.push(item.tag)
+      //   })
+      // }
+      // this.getBlogList();
+    }, 1000)
+  }
+  //显示菜单栏
+  showHideMenuBar(sidebarOnOff) {
+    this.setState({
+      sidebarOnOff
+    })
   }
   //获取blog列表
   getBlogList() {
     if (!this.reqOnOff) return;
     const blogList = this.state.blogList;
     const blogListLength = blogList.length;
-    const learnBlogList = utils.sessionStore.get('learnBlogList') || [];
+    const learnBlogList = sessionStore.get('learnBlogList') || [];
     this.reqOnOff = false;
     if (learnBlogList.length === 0) {
-      axios.get(`/app/getBlogs?key=&page=${this.state.page}&pageSize=10`).then(res => {
+      axios.get(`/app/getBlogs?page=${this.page}&pageSize=10&tags=${this.queryTags}`).then(res => {
         if (res.data.code !== 0) return;
         res.data.data.list.forEach(item => {
           const content = new DOMParser().parseFromString(item.content, 'text/html');
@@ -80,32 +143,30 @@ class Learn extends React.Component {
           blogList
         });
         if (blogListLength === this.state.blogList.length) {
-          utils.query('.loading')[0].style.display = 'none';
+          query('.loading')[0].style.display = 'none';
         }
         this.setBlogListHeight();
       });
     } else {
       this.setState({
-        blogList: learnBlogList,
-        page: utils.sessionStore.get('learnBlogPage')
+        blogList: learnBlogList
       });
-      utils.sessionStore.set('learnBlogList', []);
-      window.scrollTo(0, utils.sessionStore.get('learnBlogScrollTop'));
+      this.page = sessionStore.get('learnBlogPage');
+      sessionStore.set('learnBlogList', []);
+      window.scrollTo(0, sessionStore.get('learnBlogScrollTop'));
       this.setBlogListHeight();
     }
   }
   //设置blogListd的高
   setBlogListHeight() {
-    this.setState({
-      blogListHeight: utils.query('.blog-list')[0].offsetHeight
-    });
+    this.blogListHeight = query('.blog-list')[0].offsetHeight;
     this.reqOnOff = true;
   }
   //保存数据
   saveData() {
-    utils.sessionStore.set('learnBlogList', this.state.blogList);
-    utils.sessionStore.set('learnBlogPage', this.state.page);
-    utils.sessionStore.set('learnBlogScrollTop', document.documentElement.scrollTop);
+    sessionStore.set('learnBlogList', this.state.blogList);
+    sessionStore.set('learnBlogPage', this.page);
+    sessionStore.set('learnBlogScrollTop', document.documentElement.scrollTop);
   }
   //组件卸载
   componentWillUnmount() {

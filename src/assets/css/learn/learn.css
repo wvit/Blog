@@ -3,7 +3,6 @@
 }
 
 .blog-list {
-
   min-height: calc(100vh - 89px);
   overflow: hidden;
 }
@@ -72,4 +71,37 @@ a {
   color: #999;
   text-align: center;
   letter-spacing: 1px;
+}
+
+.title-btn {
+  position: absolute;
+  top: -2px;
+  right: 15px;
+  color: #fff;
+  font-size: 24px;
+}
+
+.tag-title {
+  font-weight: normal;
+}
+
+.tag-title::before {
+  font-size: 20px;
+  margin-right: 5px;
+  vertical-align: middle;
+}
+
+.tag-list {
+  text-align: center;
+}
+
+.tag-list li {
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+.tag-list li.checked {
+  background: red;
+  border: 1px solid red;
+  color: #fff;
 }

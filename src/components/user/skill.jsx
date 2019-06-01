@@ -119,7 +119,7 @@ class Skill extends React.Component {
       },
       xAxis: {},
       yAxis: {
-        data: ['Vue', '微信小程序', 'ES6/7/8', 'Nodejs', 'React']
+        data: ['Vue', '微信小程序', 'ES6', 'Nodejs', 'React']
       },
       series: [
         {
@@ -127,7 +127,7 @@ class Skill extends React.Component {
           itemStyle: {
             color: mainColorStore.getState()
           },
-          data: [10, 10, 10, 6, 4]
+          data: [8, 8, 8, 5, 4]
         }
       ]
     };

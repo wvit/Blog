@@ -1,6 +1,6 @@
 import React from 'react'
 import { Title } from 'moha-ui'
-import axios from '../../axios'
+import { axios } from '../../utils'
 import '../../assets/css/public/blogDetail.css'
 
 class BlogDetail extends React.Component {
