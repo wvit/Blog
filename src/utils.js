@@ -2,7 +2,7 @@ import Axios from 'axios'
 
 const production = true; //是否生产环境
 //请求地址
-const baseURL = production ? 'https://1wei.cc:1999' : 'http://10.100.115.111:1999'
+const baseURL = production ? 'https://1wei.cc:1999' : 'http://10.100.115.113:1999'
 const axios = Axios.create({
   baseURL
 });

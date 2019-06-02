@@ -13,3 +13,11 @@ body {
 .mt10 {
   margin-top: 10px;
 }
+
+.ql-align-center {
+  text-align: center;
+}
+
+.ql-indent-1 {
+  text-indent: 30px;
+}

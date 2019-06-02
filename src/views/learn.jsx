@@ -9,10 +9,8 @@ class Learn extends React.Component {
   constructor(props) {
     super(props)
     this.reqTimer = null;//请求间隔定时器
-    this.queryTags = [];//查询关键字
     this.reqOnOff = true;//是否允许请求
     this.blogListHeight = 0;//博客容器的高
-    this.page = 1;//页码
     //监听标签容器变化
     tagStore.subscribe(() => {
       this.setState({
@@ -58,6 +56,9 @@ class Learn extends React.Component {
             }
           </ul>
         </Sidebar>
+        {
+          blogList.length < 1 ? <p className="body">暂无内容</p> : ''
+        }
         <ul className="blog-list">
           {
             blogList.map((item, index) => {
@@ -87,7 +88,7 @@ class Learn extends React.Component {
     const titleHeight = query('.head-wrap')[0].offsetHeight;
     const tabberHeight = query('.tabber-wrap ul')[0].offsetHeight;
     const clientHeight = window.screen.height - titleHeight - tabberHeight;
-    this.getBlogList();
+    this.setTag();
     window.onscroll = () => {
       const scrollTop = clientHeight + document.documentElement.scrollTop;
       if (scrollTop > this.blogListHeight) {
@@ -104,49 +105,37 @@ class Learn extends React.Component {
       type: 'tag',
       data: tags
     });
-    clearTimeout(this.reqTimer)
-    this.reqTimer = setTimeout(() => {
-      // this.setState({
-      //   blogList: []
-      // })
-      // if (tagStore.getState().tag) {
-      //   tagStore.getState().tag.forEach(item => {
-      //     if (item.checked) queryTag.push(item.tag)
-      //   })
-      // }
-      // this.getBlogList();
-    }, 1000)
+    clearTimeout(this.reqTimer);
+    this.reqTimer = setTimeout(this.setTag.bind(this), 500);
+  }
+  //设置标签
+  setTag() {
+    const tags = tagStore.getState().tag;
+    this.page = 1;
+    this.queryTags = [];
+    this.setState({
+      blogList: []
+    });
+    if (tags) {
+      tags.forEach(item => {
+        if (item.checked) this.queryTags.push(item.tag);
+      })
+    }
+    this.reqBlogList();
   }
   //显示菜单栏
   showHideMenuBar(sidebarOnOff) {
     this.setState({
       sidebarOnOff
-    })
+    });
   }
   //获取blog列表
   getBlogList() {
     if (!this.reqOnOff) return;
-    const blogList = this.state.blogList;
-    const blogListLength = blogList.length;
     const learnBlogList = sessionStore.get('learnBlogList') || [];
     this.reqOnOff = false;
     if (learnBlogList.length === 0) {
-      axios.get(`/app/getBlogs?page=${this.page}&pageSize=10&tags=${this.queryTags}`).then(res => {
-        if (res.data.code !== 0) return;
-        res.data.data.list.forEach(item => {
-          const content = new DOMParser().parseFromString(item.content, 'text/html');
-          const img = content.querySelector('img');
-          if (img) item.img = img.src;
-          blogList.push(item)
-        });
-        this.setState({
-          blogList
-        });
-        if (blogListLength === this.state.blogList.length) {
-          query('.loading')[0].style.display = 'none';
-        }
-        this.setBlogListHeight();
-      });
+      this.reqBlogList();
     } else {
       this.setState({
         blogList: learnBlogList
@@ -157,18 +146,38 @@ class Learn extends React.Component {
       this.setBlogListHeight();
     }
   }
+  //发送获取博客的请求
+  reqBlogList() {
+    const blogList = this.state.blogList;
+    const blogListLength = blogList.length;
+    axios.get(`/app/getBlogs?page=${this.page}&pageSize=10&tags=${JSON.stringify(this.queryTags)}`).then(res => {
+      if (res.data.code !== 0) return;
+      res.data.data.list.forEach(item => {
+        const content = new DOMParser().parseFromString(item.content, 'text/html');
+        const img = content.querySelector('img');
+        if (img) item.img = img.src;
+        blogList.push(item)
+      });
+      this.setState({
+        blogList
+      });
+      this.setBlogListHeight();
+      if (blogListLength !== this.state.blogList.length) return;
+      query('.loading')[0].style.display = 'none';
+    });
+  }
   //设置blogListd的高
   setBlogListHeight() {
     this.blogListHeight = query('.blog-list')[0].offsetHeight;
     this.reqOnOff = true;
   }
-  //保存数据
+  //进入详情页保存数据
   saveData() {
     sessionStore.set('learnBlogList', this.state.blogList);
     sessionStore.set('learnBlogPage', this.page);
     sessionStore.set('learnBlogScrollTop', document.documentElement.scrollTop);
   }
-  //组件卸载
+  //组件卸载移除时间
   componentWillUnmount() {
     window.onscroll = null;
   }

@@ -1,6 +1,7 @@
 .title {
   font-size: 18px;
-  margin-top: 10px;
+  margin: 10px 0;
+  line-height: 30px;
 }
 
 .addTime {
@@ -18,4 +19,16 @@
   font-size: 14px;
   line-height: 24px;
   margin-top: 10px;
+  
+}
+
+.content p {
+  
+  /* text-indent: 30px;
+  box-sizing: border-box; */
+}
+
+.content img {
+  text-align: center;
+  /* transform: translateX(-30px); */
 }
