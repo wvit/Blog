@@ -1,0 +1,12 @@
+.type-wrap {
+  float: left;
+  padding-right: 5px;
+}
+
+.type-wrap li {
+  float: left;
+  width: 100px;
+  text-align: center;
+  border-radius: 5px;
+  margin-left: 5px;
+}

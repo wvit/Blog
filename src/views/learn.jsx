@@ -21,13 +21,13 @@ class Learn extends React.Component {
       tags: tagStore.getState().tag,//博客标签
       blogList: [],//博客列表
       sidebarOnOff: false,//菜单栏显示开关
+      mainColor: mainColorStore.getState()//主题颜色
     }
   }
   //渲染
   render() {
     const style = { overflow: "hidden", height: 'calc(100vh - 89px)' };
-    const mainColor = mainColorStore.getState();
-    const { sidebarOnOff, blogList, tags } = this.state;
+    const { sidebarOnOff, blogList, tags, mainColor } = this.state;
     return (
       <div className="wrap" style={sidebarOnOff ? style : {}}>
         <Title titleName='学习日志' className="mainBgColor">
