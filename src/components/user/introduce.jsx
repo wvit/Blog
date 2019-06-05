@@ -2,7 +2,6 @@ import React from 'react'
 import { Title } from 'moha-ui'
 import demo from '../../assets/img/demo.jpg'
 import demo1 from '../../assets/img/demo1.jpg'
-import '../../assets/css/user/introduce.css'
 
 class Introduce extends React.Component {
   render() {

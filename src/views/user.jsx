@@ -39,6 +39,12 @@ class User extends React.Component {
               <i className="entry icon icon-jinru"></i>
             </NavLink>
           </li>
+          <li className="clearfix">
+            <NavLink to="/interior/contact" className="clearfix link">
+              <span className="icon icon-email">撩我</span>
+              <i className="entry icon icon-jinru"></i>
+            </NavLink>
+          </li>
         </ul>
       </div >
     )

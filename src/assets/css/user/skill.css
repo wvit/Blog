@@ -1,5 +1,5 @@
 .echarts {
-  margin-bottom: 30px;
+  margin-bottom: 50px;
 }
 
 .skill-echarts1 {
@@ -8,4 +8,12 @@
 
 .skill-echarts2 {
   height: 500px;
+}
+
+.skill-echarts3 {
+  height: 300px;
+}
+
+.skill-echarts4 {
+  height: 320px;
 }

@@ -73,7 +73,7 @@ a {
   letter-spacing: 1px;
 }
 
-.title-btn {
+.title-btn.icon {
   position: absolute;
   top: -2px;
   right: 15px;
