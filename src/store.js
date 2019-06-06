@@ -39,9 +39,13 @@ getTag(2, 'type');
 function getTag(status, type) {
   axios.get(`/app/getTags?status=${status}`).then(res => {
     if (res.data.code !== 0) return;
-    res.data.data.forEach(item => {
-      item.checked = false;
-    })
+    const data = res.data.data
+    if (status === 1) {
+      data.forEach(item => {
+        item.checked = false;
+      });
+    }
+    localStore.set(status === 1 ? 'tagList' : 'typeList', data)
     tagStore.dispatch({
       type,
       data: res.data.data

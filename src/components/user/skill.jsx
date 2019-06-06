@@ -228,7 +228,6 @@ class Skill extends React.Component {
           indicator: [
             { text: 'MO法', max: 10 },
             { text: '游戏', max: 10 },
-            { text: '火车', max: 10 },
             { text: '武侠', max: 10 },
             { text: '象棋/围棋', max: 10 },
             { text: '学习', max: 10 },
@@ -255,7 +254,7 @@ class Skill extends React.Component {
         },
         data: [
           {
-            value: [10, 4, 3, 6, 3, 8, 5],
+            value: [10, 4, 6, 3, 8, 5],
             name: '兴趣一览'
           }
         ]

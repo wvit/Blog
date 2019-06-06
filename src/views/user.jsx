@@ -49,6 +49,13 @@ class User extends React.Component {
       </div >
     )
   }
+  //组件渲染完成
+  componentDidMount() {
+
+
+
+
+  }
   //颜色值变化
   colorChange({ hex }) {
     this.setState({
