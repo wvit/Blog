@@ -30,7 +30,6 @@
 }
 
 .item-content {
-  margin-top: 10px;
   display: flex;
 }
 
@@ -55,7 +54,7 @@
 }
 
 .item-content .img {
-  height: 48px;
+  max-height: 48px;
 }
 
 .blog-item-wrap {
@@ -71,4 +70,22 @@ a {
   color: #999;
   text-align: center;
   letter-spacing: 1px;
+}
+
+.item-tag {
+  font-size: 12px;
+  color: #999;
+  line-height: 18px;
+  margin-top: 10px;
+}
+
+.item-tag::before {
+  font-size: 18px;
+}
+
+.item-tag em {
+  display: inline-block;
+  font-style: normal;
+  margin-left: 5px;
+  vertical-align: top;
 }

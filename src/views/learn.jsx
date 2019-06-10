@@ -69,6 +69,13 @@ class Learn extends React.Component {
                     <h4>{item.title}</h4>
                     <p><i className="icon icon-shijian"></i> {item.addTime}</p>
                   </div>
+                  <p className="item-tag icon icon-tag">
+                    {
+                      item.tags.map((item, index) => {
+                        return <em key={index}>{item}</em>
+                      })
+                    }
+                  </p>
                   <div className="item-content clearfix">
                     <div className="text" dangerouslySetInnerHTML={{ __html: item.content }}></div>
                     {
