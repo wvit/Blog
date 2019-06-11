@@ -9,6 +9,7 @@ import '../assets/css/public/blogList.css'
 class Learn extends React.Component {
   constructor(props) {
     super(props)
+    this.queryTags = [];//搜索的标签数组
     this.reqTimer = null;//请求间隔定时器
     this.reqOnOff = true;//是否允许请求
     this.blogListHeight = 0;//博客容器的高
@@ -20,7 +21,7 @@ class Learn extends React.Component {
     })
     this.state = {
       tags: tagStore.getState().tag,//博客标签
-      blogList: [],//博客列表
+      blogList: sessionStore.get('learnBlogList') || [],//博客列表
       sidebarOnOff: false,//菜单栏显示开关
       mainColor: mainColorStore.getState()//主题颜色
     }
@@ -96,7 +97,7 @@ class Learn extends React.Component {
     const titleHeight = query('.head-wrap')[0].offsetHeight;
     const tabberHeight = query('.tabber-wrap ul')[0].offsetHeight;
     const clientHeight = window.screen.height - titleHeight - tabberHeight;
-    this.setTag();
+    if (this.state.blogList.length === 0) this.setTag();
     window.onscroll = () => {
       const scrollTop = clientHeight + document.documentElement.scrollTop;
       if (this.state.blogList.length === 0) return;

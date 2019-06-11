@@ -17,14 +17,13 @@ class Find extends React.Component {
       this.setState({
         type: tagStore.getState().type
       })
-      this.init();
     })
     this.activeStyle = { background: mainColorStore.getState(), color: '#fff' };//选中类型样式
     this.state = {
       toolbarVisible: false,//是否显示
       type: tagStore.getState().type,//类型数据
-      typeActiveIndex: 0,//类型选中索引
-      blogList: [],//博客列表
+      typeActiveIndex: '',//类型选中索引
+      blogList: sessionStore.get('lifeBlogList') || [],//博客列表
     };
   }
   render() {
@@ -33,7 +32,10 @@ class Find extends React.Component {
       <div className='wrap'>
         <Title titleName="生活记录" className="mainBgColor" />
         <Toolbar visible={toolbarVisible} onVisible={this.showHideToolbar.bind(this)}>
-          <ul className="type-wrap" style={{ width: `${type.length * 105}px` }}>
+          <ul className="type-wrap" style={{ width: `${(type.length + 1) * 105}px` }}>
+            <li onClick={this.typeChange.bind(this, '', '')} style={typeActiveIndex === '' ? this.activeStyle : {}}>
+              全部
+            </li>
             {
               type.map((item, index) => {
                 return (
@@ -77,7 +79,7 @@ class Find extends React.Component {
     const titleHeight = query('.head-wrap')[0].offsetHeight;
     const tabberHeight = query('.tabber-wrap ul')[0].offsetHeight;
     const clientHeight = window.screen.height - titleHeight - tabberHeight;
-    this.init();
+    if (this.state.blogList.length === 0) this.typeChange();
     window.onscroll = () => {
       const scrollTop = clientHeight + document.documentElement.scrollTop;
       if (this.state.blogList.length === 0) return;
@@ -87,14 +89,8 @@ class Find extends React.Component {
       }
     }
   }
-  //初始化数据
-  init() {
-    const { type, typeActiveIndex } = this.state;
-    if (type.length === 0) return;
-    this.typeChange(type[typeActiveIndex]._id);
-  }
   //类型改变
-  typeChange(id, typeActiveIndex = 0) {
+  typeChange(id = '', typeActiveIndex = '') {
     if (this.classId === id) return;
     query('.loading')[0].style.display = 'block';
     this.page = 1;
