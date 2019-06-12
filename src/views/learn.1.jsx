@@ -1,52 +1,63 @@
 import React from 'react'
-import { Title, Toolbar } from 'moha-ui'
+import { Title, Sidebar } from 'moha-ui'
 import { NavLink } from 'react-router-dom'
 import { tagStore, mainColorStore } from '../store'
 import { sessionStore, query, axios } from '../utils'
-import '../assets/css/life/life.css'
+import '../assets/css/learn/learn.css'
 import '../assets/css/public/blogList.css'
 
-class Find extends React.Component {
+class Learn extends React.Component {
   constructor(props) {
     super(props)
+    this.queryTags = [];//搜索的标签数组
     this.reqTimer = null;//请求间隔定时器
     this.reqOnOff = true;//是否允许请求
     this.blogListHeight = 0;//博客容器的高
     //监听标签容器变化
     tagStore.subscribe(() => {
       this.setState({
-        type: tagStore.getState().type
+        tags: tagStore.getState().tag
       })
     })
-    this.activeStyle = { background: mainColorStore.getState(), color: '#fff' };//选中类型样式
     this.state = {
-      toolbarVisible: false,//是否显示
-      type: tagStore.getState().type,//类型数据
-      typeActiveIndex: '',//类型选中索引
-      blogList: sessionStore.get('lifeBlogList') || [],//博客列表
-    };
+      tags: tagStore.getState().tag,//博客标签
+      blogList: sessionStore.get('learnBlogList') || [],//博客列表
+      sidebarOnOff: false,//菜单栏显示开关
+      mainColor: mainColorStore.getState()//主题颜色
+    }
   }
+  //渲染
   render() {
-    const { toolbarVisible, type, typeActiveIndex, blogList } = this.state;
+    const style = { overflow: "hidden", height: 'calc(100vh - 89px)' };
+    const { sidebarOnOff, blogList, tags, mainColor } = this.state;
     return (
-      <div className='wrap'>
-        <Title titleName="生活记录" className="mainBgColor" />
-        <Toolbar visible={toolbarVisible} onVisible={this.showHideToolbar.bind(this)}>
-          <ul className="type-wrap" style={{ width: `${(type.length + 1) * 105}px` }}>
-            <li onClick={this.typeChange.bind(this, '', '')} style={typeActiveIndex === '' ? this.activeStyle : {}}>
-              全部
-            </li>
+      <div className="wrap" style={sidebarOnOff ? style : {}}>
+        <Title titleName='学习日志' className="mainBgColor">
+          <span className="title-btn icon icon-40" onClick={this.showHideMenuBar.bind(this, true)}></span>
+        </Title>
+        <Sidebar visible={sidebarOnOff} onClose={this.showHideMenuBar.bind(this, false)}>
+          <h3 className="tag-title icon icon-tag">请选择博客标签</h3>
+          <ul className="tag-list">
             {
-              type.map((item, index) => {
+              tags.map((item, index) => {
+                const checked = item.checked;
                 return (
-                  <li key={index} onClick={this.typeChange.bind(this, item._id, index)} style={typeActiveIndex === index ? this.activeStyle : {}}>
+                  <li
+                    style={{
+                      border: `1px solid ${checked ? mainColor : '#999'}`,
+                      background: checked ? mainColor : '',
+                      color: checked ? '#fff' : ''
+                    }}
+                    key={index}
+                    onClick={this.checkTag.bind(this, index)}
+                  >
                     {item.tag}
                   </li>
                 )
               })
             }
           </ul>
-        </Toolbar>
+        </Sidebar>
         {
           blogList.length < 1 ? <p className="body">暂无内容</p> : ''
         }
@@ -59,6 +70,13 @@ class Find extends React.Component {
                     <h4>{item.title}</h4>
                     <p><i className="icon icon-shijian"></i> {item.addTime}</p>
                   </div>
+                  <p className="item-tag icon icon-tag">
+                    {
+                      item.tags.map((item, index) => {
+                        return <em key={index}>{item}</em>
+                      })
+                    }
+                  </p>
                   <div className="item-content clearfix">
                     <div className="text" dangerouslySetInnerHTML={{ __html: item.content }}></div>
                     {
@@ -79,41 +97,56 @@ class Find extends React.Component {
     const titleHeight = query('.head-wrap')[0].offsetHeight;
     const tabberHeight = query('.tabber-wrap ul')[0].offsetHeight;
     const clientHeight = window.screen.height - titleHeight - tabberHeight;
-    if (this.state.blogList.length === 0) this.typeChange();
+    if (this.state.blogList.length === 0) this.setTag();
     window.onscroll = () => {
       const scrollTop = clientHeight + document.documentElement.scrollTop;
       if (this.state.blogList.length === 0) return;
       if (scrollTop > this.blogListHeight) {
-        this.page = this.page + 1
+        this.page = this.page + 1;
         this.getBlogList();
       }
     }
   }
-  //类型改变
-  typeChange(id = '', typeActiveIndex = '') {
-    if (this.classId === id) return;
-    query('.loading')[0].style.display = 'block';
+  //选择标签
+  checkTag(index) {
+    const tags = this.state.tags;
+    tags[index].checked = !tags[index].checked;
+    tagStore.dispatch({
+      type: 'tag',
+      data: tags
+    });
+    clearTimeout(this.reqTimer);
+    this.reqTimer = setTimeout(this.setTag.bind(this), 500);
+  }
+  //设置标签
+  setTag() {
+    const tags = tagStore.getState().tag;
     this.page = 1;
-    this.classId = id;
+    this.queryTags = [];
     this.setState({
-      typeActiveIndex,
       blogList: []
-    }, this.getBlogList);
+    });
+    if (tags) {
+      tags.forEach(item => {
+        if (item.checked) this.queryTags.push(item.tag);
+      })
+    }
+    this.reqBlogList();
   }
   //获取blog列表
   getBlogList() {
     if (!this.reqOnOff) return;
-    const lifeBlogList = sessionStore.get('lifeBlogList') || [];
+    const learnBlogList = sessionStore.get('learnBlogList') || [];
     this.reqOnOff = false;
-    if (lifeBlogList.length === 0) {
+    if (learnBlogList.length === 0) {
       this.reqBlogList();
     } else {
       this.setState({
-        blogList: lifeBlogList
+        blogList: learnBlogList
       });
-      this.page = sessionStore.get('lifeBlogPage');
-      sessionStore.set('lifeBlogList', []);
-      window.scrollTo(0, sessionStore.get('lifeBlogScrollTop'));
+      this.page = sessionStore.get('learnBlogPage');
+      sessionStore.set('learnBlogList', []);
+      window.scrollTo(0, sessionStore.get('learnBlogScrollTop'));
       this.setBlogListHeight();
     }
   }
@@ -121,7 +154,7 @@ class Find extends React.Component {
   reqBlogList() {
     const blogList = this.state.blogList;
     const blogListLength = blogList.length;
-    axios.get(`/app/getBlogs?page=${this.page}&pageSize=10&model=2&classId=${this.classId}`).then(res => {
+    axios.get(`/app/getBlogs?page=${this.page}&pageSize=10&model=1&tags=${JSON.stringify(this.queryTags)}`).then(res => {
       if (res.data.code !== 0) return;
       res.data.data.list.forEach(item => {
         const content = new DOMParser().parseFromString(item.content, 'text/html');
@@ -138,23 +171,24 @@ class Find extends React.Component {
       window.onscroll = null;
     });
   }
+  //显示侧边栏
+  showHideMenuBar(sidebarOnOff) {
+    this.setState({
+      sidebarOnOff
+    });
+  }
   //设置blogListd的高
   setBlogListHeight() {
     this.blogListHeight = query('.blog-list')[0].offsetHeight;
     this.reqOnOff = true;
   }
-  //工具栏显示隐藏
-  showHideToolbar() {
-    const toolbarVisible = !this.state.toolbarVisible;
-    this.setState({ toolbarVisible });
-  }
   //组件卸载移除事件
   componentWillUnmount() {
-    sessionStore.set('lifeBlogList', this.state.blogList);
-    sessionStore.set('lifeBlogPage', this.page);
-    sessionStore.set('lifeBlogScrollTop', document.documentElement.scrollTop);
+    sessionStore.set('learnBlogList', this.state.blogList);
+    sessionStore.set('learnBlogPage', this.page);
+    sessionStore.set('learnBlogScrollTop', document.documentElement.scrollTop);
     window.onscroll = null;
   }
 }
 
-export default Find
+export default Learn
