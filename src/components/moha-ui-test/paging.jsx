@@ -4,7 +4,7 @@ import { query, axios } from '../../utils'
 class Paging extends React.Component {
   constructor(props) {
     super(props);
-    this.page = 1;//页码
+    this.page =  1;//页码
     this.reqOnOff = true;//是否允许请求
     this.setReqData();//设置请求的参数
   }
@@ -21,7 +21,6 @@ class Paging extends React.Component {
     this.setReqData();
     window.onscroll = () => {
       const scrollTop = this.props.clientHeight + document.documentElement.scrollTop;
-      console.log(scrollTop, this.pagingWrapHeight)
       if (scrollTop >= this.pagingWrapHeight) {
         this.page = this.page + 1;
         this.getPageData();

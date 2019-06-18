@@ -26,7 +26,7 @@ class Learn extends React.Component {
       //请求分页参数
       reqData: {
         model: 1,
-        tags: '[]' 
+        tags: '[]'
       },
     }
   }
@@ -103,6 +103,7 @@ class Learn extends React.Component {
     const titleHeight = query('.head-wrap')[0].offsetHeight;
     const tabberHeight = query('.tabber-wrap ul')[0].offsetHeight;
     const clientHeight = window.screen.height - titleHeight - tabberHeight;
+    window.scrollTo(0, sessionStore.get('learnBlogScrollTop') || 0);
     this.setState({
       clientHeight
     })
@@ -111,8 +112,10 @@ class Learn extends React.Component {
   //获取分页信息
   getPageData({ data, code }) {
     console.log('分页数据', data);
-    if (code !== 0) return;
-    if (data.list.length === 0) query('.loading')[0].style.display = 'none';
+    const learnBlogList = sessionStore.get('learnBlogList') || [];
+    query('.loading')[0].style.display = data.list.length === 0 ? 'none' : 'block';
+    if (code !== 0 || learnBlogList.length !== 0) return;
+    sessionStore.set('learnBlogList', []);
     const blogList = this.state.blogList;
     data.list.forEach(item => {
       const content = new DOMParser().parseFromString(item.content, 'text/html');
