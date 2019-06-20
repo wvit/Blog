@@ -4,7 +4,7 @@ import { Title, Dialog } from 'moha-ui'
 
 class Index extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       DialogOnOff: false//弹窗开关
     }

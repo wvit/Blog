@@ -9,31 +9,37 @@ import '../assets/css/public/blogList.css'
 
 class Learn extends React.Component {
   constructor(props) {
-    super(props)
-    this.reqTimer = null;//请求间隔定时器
+    super(props);
     //监听标签容器变化
     tagStore.subscribe(() => {
       this.setState({
         tags: tagStore.getState().tag
-      })
+      });
+    })
+    let tags = [];//初始化选择的标签
+    tagStore.getState().tag.forEach(item => {
+      if (item.checked) tags.push(item.tag);
     })
     this.state = {
       tags: tagStore.getState().tag,//博客标签
       blogList: sessionStore.get('learnBlogList') || [],//博客列表
+      page: sessionStore.get('learnBlogPage') || 1,//开始页码
       sidebarOnOff: false,//菜单栏显示开关
       mainColor: mainColorStore.getState(),//主题颜色
       clientHeight: 0,//可视区高度
       //请求分页参数
       reqData: {
+        pageSize: 10,
         model: 1,
-        tags: '[]'
+        tags: JSON.stringify(tags)
       },
-    }
+    };
+
   }
   //渲染
   render() {
     const style = { overflow: "hidden", height: 'calc(100vh - 89px)' };
-    const { sidebarOnOff, blogList, tags, mainColor, clientHeight, reqData } = this.state;
+    const { sidebarOnOff, blogList, tags, mainColor, clientHeight, reqData, page } = this.state;
     return (
       <div className="wrap" style={sidebarOnOff ? style : {}}>
         <Title titleName='学习日志' className="mainBgColor">
@@ -65,7 +71,13 @@ class Learn extends React.Component {
         {
           blogList.length < 1 ? <p className="body">暂无内容</p> : ''
         }
-        <Paging clientHeight={clientHeight} data={reqData} onGetPageData={this.getPageData.bind(this)}>
+        <Paging
+          clientHeight={clientHeight}
+          pageKey="page"
+          page={page}
+          data={reqData}
+          onGetPageData={this.getPageData.bind(this)}
+          onLeave={this.pageLeave.bind(this)}>
           <ul className="blog-list">
             {
               blogList.map((item, index) => {
@@ -109,13 +121,14 @@ class Learn extends React.Component {
     })
     this.setTag();
   }
+  //离开页面
+  pageLeave(data) {
+    sessionStore.set('learnBlogPage', data.page);
+  }
   //获取分页信息
   getPageData({ data, code }) {
-    console.log('分页数据', data);
-    const learnBlogList = sessionStore.get('learnBlogList') || [];
     query('.loading')[0].style.display = data.list.length === 0 ? 'none' : 'block';
-    if (code !== 0 || learnBlogList.length !== 0) return;
-    sessionStore.set('learnBlogList', []);
+    if (code !== 0) return;
     const blogList = this.state.blogList;
     data.list.forEach(item => {
       const content = new DOMParser().parseFromString(item.content, 'text/html');
@@ -135,8 +148,7 @@ class Learn extends React.Component {
       type: 'tag',
       data: tags
     });
-    clearTimeout(this.reqTimer);
-    this.reqTimer = setTimeout(this.setTag.bind(this), 500);
+    this.setTag();
   }
   //设置标签
   setTag() {
@@ -147,9 +159,10 @@ class Learn extends React.Component {
       tags.forEach(item => {
         if (item.checked) queryTags.push(item.tag);
       })
-      reqData.queryTags = JSON.stringify(queryTags);
+      reqData.tags = JSON.stringify(queryTags);
       this.setState({
-        reqData
+        reqData,
+        blogList: []
       })
     }
   }
@@ -162,8 +175,8 @@ class Learn extends React.Component {
   //组件卸载移除事件
   componentWillUnmount() {
     sessionStore.set('learnBlogList', this.state.blogList);
-    sessionStore.set('learnBlogPage', this.page);
     sessionStore.set('learnBlogScrollTop', document.documentElement.scrollTop);
+    this.setState = () => { };
   }
 }
 

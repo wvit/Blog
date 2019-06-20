@@ -4,7 +4,9 @@ import { query, axios } from '../../utils'
 class Paging extends React.Component {
   constructor(props) {
     super(props);
-    this.page =  1;//页码
+    const { pageKey, page = 1 } = props;
+    this.data = {};//额外请求数据
+    this[pageKey] = page;//页码
     this.reqOnOff = true;//是否允许请求
     this.setReqData();//设置请求的参数
   }
@@ -18,14 +20,41 @@ class Paging extends React.Component {
   }
   //组件初始化完成
   componentDidMount() {
+    this.setPagingWrapHeight();
     this.setReqData();
+    const { pageKey } = this.props;
     window.onscroll = () => {
       const scrollTop = this.props.clientHeight + document.documentElement.scrollTop;
       if (scrollTop >= this.pagingWrapHeight) {
-        this.page = this.page + 1;
+        this[pageKey] = this[pageKey] + 1;
         this.getPageData();
       }
     }
+  }
+  //监听props变化
+  componentWillReceiveProps(nextProps) {
+    this.data = nextProps.data;
+    this.observer(this.data)
+  }
+  //给对象属性设置数据劫持
+  observer(obj = {}) {
+    Object.keys(obj).forEach((item) => {
+      this.defineReactive(obj, item, obj[item])
+    })
+  }
+  //数据劫持
+  defineReactive(obj, key, value) {
+    const { pageKey } = this.props;
+    Object.defineProperty(obj, key, {
+      get: () => {
+        return value;
+      },
+      set: newValue => {
+        value = newValue;
+        this[pageKey] = 1;
+        this.setReqData();
+      }
+    })
   }
   //设置请求的参数
   setReqData() {
@@ -39,20 +68,23 @@ class Paging extends React.Component {
   //获取blog列表
   getPageData() {
     if (!this.reqOnOff) return;
+    const { pageKey } = this.props;
     this.reqOnOff = false;
-    axios.get(`/app/getBlogs?page=${this.page}&pageSize=10${this.reqData}`).then(res => {
+    axios.get(`/app/getBlogs?${pageKey}=${this[pageKey]}${this.reqData}`).then(res => {
       this.props.onGetPageData(res.data);
       this.setPagingWrapHeight();
-      if (res.data.data.list.length === 0) window.onscroll = null;
+      this.reqOnOff = true;
+      if (res.data.data.list.length === 0) this[pageKey]--;
     });
   }
   //设置paging-wrap的高
   setPagingWrapHeight() {
     this.pagingWrapHeight = query('.paging-wrap')[0].offsetHeight;
-    this.reqOnOff = true;
   }
   //组件卸载移除事件
   componentWillUnmount() {
+    const { pageKey } = this.props;
+    this.props.onLeave({ [pageKey]: this[pageKey] });
     window.onscroll = null;
   }
 }
