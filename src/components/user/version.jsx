@@ -10,7 +10,7 @@ const versionData = [
     hint: '2019-06-06'
   },
   {
-    description: '0.1.11版---修改下拉触底加载数据',
+    description: '0.1.11版---修改下拉触底加载数据，添加清除缓存',
     hint: '2019-06-20'
   },
   {
