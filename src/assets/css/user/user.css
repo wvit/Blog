@@ -32,3 +32,9 @@
   float: right;
   font-size: 24px;
 }
+
+.clear-hint {
+  line-height: 24px;
+  margin: 20px 0;
+  font-size: 14px;
+}

@@ -34,7 +34,6 @@ class Learn extends React.Component {
         tags: JSON.stringify(tags)
       },
     };
-
   }
   //渲染
   render() {
@@ -119,7 +118,6 @@ class Learn extends React.Component {
     this.setState({
       clientHeight
     })
-    this.setTag();
   }
   //离开页面
   pageLeave(data) {
@@ -127,8 +125,12 @@ class Learn extends React.Component {
   }
   //获取分页信息
   getPageData({ data, code }) {
+    const learnBlogList = sessionStore.get('learnBlogList') || [];
     query('.loading')[0].style.display = data.list.length === 0 ? 'none' : 'block';
-    if (code !== 0) return;
+    if (code !== 0 || learnBlogList.length > 0) {
+      sessionStore.set('learnBlogList', []);
+      return
+    };
     const blogList = this.state.blogList;
     data.list.forEach(item => {
       const content = new DOMParser().parseFromString(item.content, 'text/html');

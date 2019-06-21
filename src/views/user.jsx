@@ -1,5 +1,5 @@
 import React from 'react'
-import { ColorPicker, Title } from 'moha-ui'
+import { ColorPicker, Title, Dialog } from 'moha-ui'
 import { mainColorStore } from '../store'
 import { NavLink } from 'react-router-dom'
 import '../assets/css/user/user.css'
@@ -8,7 +8,8 @@ class User extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      colorValue: mainColorStore.getState() //颜色值
+      colorValue: mainColorStore.getState(), //颜色值
+      DialogOnOff: false,//弹窗开关
     }
   }
   render() {
@@ -45,7 +46,18 @@ class User extends React.Component {
               <i className="entry icon icon-jinru"></i>
             </NavLink>
           </li>
+          <li className="clearfix" onClick={() => { this.setState({ DialogOnOff: true }) }}>
+            <span className="icon icon-reset">清除缓存</span>
+          </li>
         </ul>
+        <Dialog
+          title='清除缓存'
+          visible={this.state.DialogOnOff}
+          onClose={() => { this.setState({ DialogOnOff: false }) }}
+          onAffirm={this.affirmClear.bind(this)}
+        >
+          <p className="clear-hint">应用中可能某些bug是由sessionStorage或localStorage导致，是否清除它们。</p>
+        </Dialog>
       </div >
     )
   }
@@ -55,6 +67,14 @@ class User extends React.Component {
       colorValue: hex
     });
     mainColorStore.dispatch({ type: 'change', color: hex });
+  }
+  //确认清除缓存
+  affirmClear() {
+    localStorage.clear();
+    sessionStorage.clear();
+    this.setState({
+      DialogOnOff: false
+    })
   }
 }
 
