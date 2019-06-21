@@ -46,6 +46,12 @@ class User extends React.Component {
               <i className="entry icon icon-jinru"></i>
             </NavLink>
           </li>
+          <li className="clearfix">
+            <NavLink to="/interior/version" className="clearfix link">
+              <span className="icon icon-version">版本进度</span>
+              <i className="entry icon icon-jinru"></i>
+            </NavLink>
+          </li>
           <li className="clearfix" onClick={() => { this.setState({ DialogOnOff: true }) }}>
             <span className="icon icon-reset">清除缓存</span>
           </li>

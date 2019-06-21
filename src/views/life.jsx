@@ -96,8 +96,7 @@ class Find extends React.Component {
     window.scrollTo(0, sessionStore.get('lifeBlogScrollTop') || 0);
     this.setState({
       clientHeight
-    })
-    this.typeChange();
+    });
   }
   //离开页面
   pageLeave(data) {
@@ -105,14 +104,18 @@ class Find extends React.Component {
   }
   //获取分页信息
   getPageData({ data, code }) {
+    const lifeBlogList = sessionStore.get('lifeBlogList') || [];
     query('.loading')[0].style.display = data.list.length === 0 ? 'none' : 'block';
-    if (code !== 0) return;
+    if (code !== 0 || lifeBlogList.length > 0) {
+      sessionStore.set('lifeBlogList', []);
+      return
+    };
     const blogList = this.state.blogList;
     data.list.forEach(item => {
       const content = new DOMParser().parseFromString(item.content, 'text/html');
       const img = content.querySelector('img');
       if (img) item.img = img.src;
-      blogList.push(item)
+      blogList.push(item);
     });
     this.setState({
       blogList

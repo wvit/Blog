@@ -3,6 +3,11 @@ body {
   max-width: 750px;
 }
 
+i,
+em {
+  font-style: normal;
+}
+
 .body {
   padding: 0 10px;
 }
