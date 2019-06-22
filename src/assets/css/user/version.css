@@ -24,6 +24,7 @@
 
 .steps-list li {
   position: relative;
+  display: flex;
 }
 
 .steps-icon {
@@ -55,7 +56,7 @@
 .steps-item {
   display: inline-block;
   font-size: 14px;
-  line-height: 22px;
+  line-height: 20px;
 }
 
 .steps-item span {
@@ -71,4 +72,23 @@
 
 .steps-icon.active span {
   background: #419eff;
+}
+
+.btn-list {
+  text-align: center;
+  margin-top: 30px;
+}
+
+.btn-list ul {
+  display: inline-block;
+  border-radius: 5px;
+  overflow: hidden;
+  color: #fff;
+}
+
+.btn-list ul li {
+  float: left;
+  padding: 0 15px;
+  font-size: 14px;
+  line-height: 38px;
 }
