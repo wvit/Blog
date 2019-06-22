@@ -34,15 +34,17 @@ class Paging extends React.Component {
   //监听props变化
   componentWillReceiveProps(nextProps) {
     this.data = nextProps.data;
+    //劫持 this.data 这个对象
     this.observer(this.data)
   }
-  //给对象属性设置数据劫持
+  //给对象所有属性设置数据劫持  默认为空对象
   observer(obj = {}) {
-    Object.keys(obj).forEach((item) => {
+    //遍历对象的所有属性
+    Object.keys(obj).forEach(item => {
       this.defineReactive(obj, item, obj[item])
     })
   }
-  //数据劫持
+  //数据劫持 
   defineReactive(obj, key, value) {
     const { pageKey } = this.props;
     Object.defineProperty(obj, key, {

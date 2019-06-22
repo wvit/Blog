@@ -7,7 +7,11 @@ import '../../assets/css/user/version.css';
 const versionData = [
   [
     {
-      description: '0.1.0最初版上线',
+      description: '雏形---发布第一篇测试博客',
+      hint: '2019-05-31'
+    },
+    {
+      description: '0.1.0---最初版上线',
       hint: '2019-06-06'
     },
     {
@@ -21,8 +25,11 @@ const versionData = [
   ],
   [
     {
-      description: '添加一些基础组件到moha-ui',
+      description: '0.1.2---添加一些基础组件到moha-ui',
       hint: '初始化'
+    }, {
+      description: '0.1.23---修复一些小bug',
+      hint: '2019-06-22'
     },
     {
       description: '封装<Paging />组件到moha-ui',
@@ -46,7 +53,7 @@ class Version extends React.Component {
       color: mainColor
     }
     this.btnList = ['网站版本', 'moha-ui版本'];   //按钮列表
-    this.actives = [1, 0];//选中步骤
+    this.actives = [2, 1];//选中步骤
     this.state = {
       btnActiveIndex: 0,//按钮选中
       versionData//版本数据

@@ -11,7 +11,7 @@ import {
 function mainColor(mainColor, {
   color
 }) {
-  mainColor = color || localStore.get('mainColor') || 'red';
+  mainColor = color || localStore.get('mainColor') || '#000';
   localStore.set('mainColor', mainColor);
   setMainColor(mainColor);
   return mainColor
